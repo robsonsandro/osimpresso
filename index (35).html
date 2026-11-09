@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d0d0f">
+<title>Minhas OS</title>
+<link rel="icon" type="image/png" href="logo.png">
+<style>
+  :root{
+    --bg:#0d0d0f;
+    --card:#17171a;
+    --card-2:#1f1f23;
+    --linha:#2a2a30;
+    --texto:#f2f2f2;
+    --texto-fraco:#8b8b95;
+    --vinho:#8a2735;
+    --vinho-claro:#b8384a;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--texto);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    display:flex;
+    justify-content:center;
+    padding:0 16px 40px;
+  }
+  .wrap{width:100%;max-width:520px}
+
+  /* ---------- TOPO / LOGO ---------- */
+  header{
+    padding:26px 0 18px;
+    text-align:center;
+  }
+  .logo-box{
+    width:100%;
+    min-height:104px;
+    border-radius:14px;
+    background:transparent;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .logo-box img{
+    max-width:100%;
+    max-height:130px;
+    display:block;
+    object-fit:contain;
+  }
+  .logo-box img.escondida{display:none}
+  .logo-fallback{
+    font-size:22px;
+    font-weight:800;
+    letter-spacing:-.5px;
+    color:var(--texto);
+    padding:20px 0;
+  }
+  .marca-nome{
+    margin:14px 0 0;
+    font-size:12px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--texto-fraco);
+    font-weight:600;
+  }
+
+  /* ---------- CARD ---------- */
+  .card{
+    background:var(--card);
+    border:1px solid var(--linha);
+    border-radius:14px;
+    padding:14px;
+    margin-bottom:14px;
+  }
+
+  /* ---------- INPUT ---------- */
+  .add{display:flex;gap:8px}
+  #num{
+    flex:1;
+    min-width:0;
+    padding:14px 16px;
+    font-size:16px;
+    border-radius:10px;
+    border:1px solid var(--linha);
+    background:var(--card-2);
+    color:var(--texto);
+    font-family:inherit;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  #num::placeholder{color:#5f5f6b}
+  #num:focus{
+    outline:none;
+    border-color:var(--vinho-claro);
+    box-shadow:0 0 0 3px rgba(184,56,74,.18);
+  }
+  button{
+    font-family:inherit;
+    font-size:15px;
+    font-weight:700;
+    padding:14px 20px;
+    border-radius:10px;
+    border:none;
+    background:var(--vinho);
+    color:#fff;
+    cursor:pointer;
+    transition:background .15s, transform .08s;
+  }
+  button:hover{background:var(--vinho-claro)}
+  button:active{transform:scale(.97)}
+
+  /* ---------- LISTA ---------- */
+  .grupo + .grupo{margin-top:18px}
+  .data-titulo{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin:0 0 8px;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--vinho-claro);
+  }
+  .data-titulo::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--linha);
+  }
+  .linha{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:11px 14px;
+    background:var(--card-2);
+    border:1px solid var(--linha);
+    border-radius:10px;
+    margin-bottom:6px;
+    animation:entra .2s ease;
+  }
+  @keyframes entra{
+    from{opacity:0;transform:translateY(-4px)}
+    to{opacity:1;transform:none}
+  }
+  .linha .os{
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:.02em;
+  }
+  .linha .os em{
+    font-style:normal;
+    color:var(--texto-fraco);
+    font-weight:500;
+    margin-right:6px;
+    font-size:13px;
+  }
+  .linha .remover{
+    background:transparent;
+    border:none;
+    color:#6a6a76;
+    font-size:18px;
+    line-height:1;
+    padding:2px 6px;
+    border-radius:6px;
+    font-weight:400;
+  }
+  .linha .remover:hover{
+    color:#ff5a6e;
+    background:rgba(255,90,110,.1);
+  }
+  .vazio{
+    color:var(--texto-fraco);
+    font-size:13px;
+    text-align:center;
+    padding:26px 10px;
+    line-height:1.6;
+  }
+
+  /* ---------- RESUMO ---------- */
+  #resumo{
+    width:100%;
+    min-height:190px;
+    padding:14px;
+    font-family:ui-monospace,"Cascadia Code",Consolas,monospace;
+    font-size:13px;
+    line-height:1.7;
+    border-radius:10px;
+    border:1px solid var(--linha);
+    background:#0a0a0c;
+    color:#d6d6dd;
+    resize:vertical;
+  }
+  #resumo:focus{outline:none;border-color:var(--vinho)}
+  .acoes{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+  }
+  .acoes button{
+    flex:1;
+    min-width:0;
+    font-size:14px;
+    padding:13px 8px;
+  }
+  .acoes button.ghost{
+    background:var(--card-2);
+    color:var(--texto-fraco);
+    border:1px solid var(--linha);
+    font-weight:600;
+  }
+  .acoes button.ghost:hover{
+    background:#26262c;
+    color:var(--texto);
+  }
+  .acoes button.ghost.perigo:hover{
+    color:#ff5a6e;
+    border-color:rgba(255,90,110,.35);
+  }
+  .acoes button.ok{background:#1e7a3f}
+  .acoes button.ok:hover{background:#249148}
+
+  @media (max-width:400px){
+    .acoes{flex-wrap:wrap}
+    .acoes button{flex:1 1 45%}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="logo-box">
+      <img id="logo" src="logo.png" alt="Logomarca">
+      <div class="logo-fallback" id="logoFallback" style="display:none">ORDENS DE SERVIÇO</div>
+    </div>
+    <div class="marca-nome">Ordens de Serviço</div>
+  </header>
+
+  <div class="card">
+    <div class="add">
+      <input id="num" type="text" inputmode="numeric" placeholder="Número da OS" autocomplete="off">
+      <button id="btnAdd">Add</button>
+    </div>
+  </div>
+
+  <div class="card" id="lista"></div>
+
+  <div class="card">
+    <textarea id="resumo" readonly placeholder="O resumo aparece aqui…"></textarea>
+    <div class="acoes">
+      <button id="btnCopiar">Copiar</button>
+      <button id="btnWhats" class="ok">WhatsApp</button>
+      <button id="btnLimpar" class="ghost perigo">Limpar</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const CHAVE_OS = 'os_pendentes_v2';
+  const $ = id => document.getElementById(id);
+  let dados = {};
+
+  /* ---------- logomarca (logo.png na mesma pasta) ---------- */
+  const logo = $('logo');
+  const fallback = $('logoFallback');
+  function logoFalhou(){
+    logo.classList.add('escondida');
+    fallback.style.display = 'block';
+  }
+  logo.addEventListener('error', logoFalhou);
+  if(logo.complete && logo.naturalWidth === 0) logoFalhou();
+
+  /* ---------- datas ---------- */
+  function hojeISO(){
+    const d = new Date();
+    return d.getFullYear() + '-' +
+           String(d.getMonth()+1).padStart(2,'0') + '-' +
+           String(d.getDate()).padStart(2,'0');
+  }
+  function formatarBR(iso){
+    const p = iso.split('-');
+    return p[2] + '/' + p[1] + '/' + p[0];
+  }
+
+  /* ---------- dados ---------- */
+  function carregar(){
+    try{ dados = JSON.parse(localStorage.getItem(CHAVE_OS) || '{}') || {}; }
+    catch(e){ dados = {}; }
+  }
+  function salvar(){
+    try{ localStorage.setItem(CHAVE_OS, JSON.stringify(dados)); }catch(e){}
+  }
+
+  function adicionar(){
+    const v = $('num').value.trim();
+    if(!v) return;
+    const chave = hojeISO();
+    if(!dados[chave]) dados[chave] = [];
+    dados[chave].push(v);
+    salvar();
+    $('num').value = '';
+    $('num').focus();
+    render();
+  }
+
+  function remover(iso, idx){
+    if(!dados[iso]) return;
+    dados[iso].splice(idx, 1);
+    if(!dados[iso].length) delete dados[iso];
+    salvar();
+    render();
+  }
+
+  function render(){
+    const lista = $('lista');
+    const datas = Object.keys(dados).sort();
+    lista.innerHTML = '';
+
+    if(!datas.length){
+      lista.innerHTML = '<div class="vazio">Nenhuma OS anotada ainda.<br>Digite o número acima e toque em Add.</div>';
+      $('resumo').value = '';
+      return;
+    }
+
+    datas.forEach(iso => {
+      const grupo = document.createElement('div');
+      grupo.className = 'grupo';
+
+      const titulo = document.createElement('div');
+      titulo.className = 'data-titulo';
+      titulo.textContent = formatarBR(iso);
+      grupo.appendChild(titulo);
+
+      dados[iso].forEach((num, i) => {
+        const l = document.createElement('div');
+        l.className = 'linha';
+
+        const span = document.createElement('span');
+        span.className = 'os';
+        span.innerHTML = '<em>OS</em>' + num.replace(/[<>&"]/g, '');
+
+        const btn = document.createElement('button');
+        btn.className = 'remover';
+        btn.type = 'button';
+        btn.title = 'Remover';
+        btn.textContent = '×';
+        btn.addEventListener('click', () => remover(iso, i));
+
+        l.appendChild(span);
+        l.appendChild(btn);
+        grupo.appendChild(l);
+      });
+
+      lista.appendChild(grupo);
+    });
+
+    gerarResumo(datas);
+  }
+
+  function gerarResumo(datas){
+    const txt = datas.map(iso => {
+      const itens = dados[iso].map(n => 'OS - ' + n).join('\n');
+      return '*' + formatarBR(iso) + '*\n' + itens;
+    }).join('\n\n');
+    $('resumo').value = txt;
+  }
+
+  /* ---------- eventos ---------- */
+  $('btnAdd').addEventListener('click', adicionar);
+  $('num').addEventListener('keydown', e => {
+    if(e.key === 'Enter'){ e.preventDefault(); adicionar(); }
+  });
+
+  $('btnCopiar').addEventListener('click', async () => {
+    const t = $('resumo').value;
+    if(!t) return;
+    const b = $('btnCopiar');
+    const orig = b.textContent;
+    try{ await navigator.clipboard.writeText(t); }
+    catch(e){ $('resumo').select(); document.execCommand('copy'); }
+    b.textContent = 'Copiado!';
+    b.classList.add('ok');
+    setTimeout(() => { b.textContent = orig; b.classList.remove('ok'); }, 1300);
+  });
+
+  $('btnWhats').addEventListener('click', () => {
+    const t = $('resumo').value;
+    if(!t) return;
+    window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank');
+  });
+
+  $('btnLimpar').addEventListener('click', () => {
+    if(!confirm('Apagar todas as OS anotadas?')) return;
+    dados = {};
+    salvar();
+    render();
+  });
+
+  carregar();
+  render();
+})();
+</script>
+</body>
+</html>
